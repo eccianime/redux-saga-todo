@@ -1,18 +1,28 @@
-import { put, call, SagaReturnType, takeLatest } from "redux-saga/effects";
-import { loadFailure, loadStart, loadSuccess } from "./actions";
-import {} from "./reducer";
-import * as FirebaseTodos from "../../services/todo";
 import {
-  TodoTypes,
+  call,
+  put,
+  SagaReturnType,
+  select,
+  takeEvery,
+} from 'redux-saga/effects';
+import { appSelect } from '../../hooks';
+import * as FirebaseTodos from '../../services/todo';
+import { loadFailure, loadStart, loadSuccess } from './actions';
+import {
   AddTodoAction,
-  UpdateTodoAction,
   DeleteTodoAction,
-} from "./types";
+  GetTodosAction,
+  TodoTypes,
+  UpdateTodoAction,
+} from './types';
 
-function* getTodos() {
+function* getTodos(action: GetTodosAction) {
   yield put(loadStart());
+  const { currentDate } = yield appSelect((state) => state.todos);
+  const date = action.payload?.date;
   const todos: SagaReturnType<typeof FirebaseTodos.getTodos> = yield call(
-    FirebaseTodos.getTodos
+    FirebaseTodos.getTodos,
+    date || currentDate
   );
   if (todos) {
     yield put(loadSuccess(todos));
@@ -21,30 +31,31 @@ function* getTodos() {
   }
 }
 
-function* addTodo(action: AddTodoAction) {
-  const { text } = action.payload;
+function* addTodo(action: AddTodoAction): Generator<any, any, any> {
   yield put(loadStart());
-  yield call(FirebaseTodos.addTodo, text);
-  yield call(getTodos);
+  const { text, icon, color } = action.payload;
+  const date = yield select((state) => state.todos.currentDate);
+  yield call(FirebaseTodos.addTodo, text, icon, color, date);
+  yield call(getTodos, { type: TodoTypes.GET_TODOS });
 }
 
 function* updateTodo(action: UpdateTodoAction) {
-  const { text, id } = action.payload;
   yield put(loadStart());
-  yield call(FirebaseTodos.updateTodo, id, text);
-  yield call(getTodos);
+  const { text, id, icon, color } = action.payload;
+  yield call(FirebaseTodos.updateTodo, id, text, icon, color);
+  yield call(getTodos, { type: TodoTypes.GET_TODOS });
 }
 
 function* deleteTodo(action: DeleteTodoAction) {
-  const { id } = action.payload;
   yield put(loadStart());
+  const { id } = action.payload;
   yield call(FirebaseTodos.deleteTodo, id);
-  yield call(getTodos);
+  yield call(getTodos, { type: TodoTypes.GET_TODOS });
 }
 
 export const todoSagas = [
-  takeLatest(TodoTypes.GET_TODO, getTodos),
-  takeLatest(TodoTypes.ADD_TODO, addTodo),
-  takeLatest(TodoTypes.UPDATE_TODO, updateTodo),
-  takeLatest(TodoTypes.DELETE_TODO, deleteTodo),
+  takeEvery(TodoTypes.GET_TODOS, getTodos),
+  takeEvery(TodoTypes.ADD_TODO, addTodo),
+  takeEvery(TodoTypes.UPDATE_TODO, updateTodo),
+  takeEvery(TodoTypes.DELETE_TODO, deleteTodo),
 ];
