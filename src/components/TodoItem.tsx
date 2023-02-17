@@ -1,5 +1,13 @@
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { Center, HStack, Icon, IconButton, Text } from 'native-base';
+import {
+  Center,
+  HStack,
+  Icon,
+  IconButton as NBIconButton,
+  IIconButtonProps,
+  Text,
+  View,
+} from 'native-base';
 import { useAppNavigation } from '../hooks';
 import { Todo } from '../redux/todo/types';
 
@@ -7,6 +15,35 @@ type TodoItemProps = {
   todo: Todo;
   showDeleteModal: (id: string) => void;
 };
+
+type IconButtonProps = IIconButtonProps & {
+  iconText: string;
+  mr?: number;
+};
+
+const IconButton = ({ iconText, mr, ...props }: IconButtonProps) => (
+  <View rounded={'full'} overflow='hidden' mr={mr || 0}>
+    <NBIconButton
+      android_ripple={{
+        foreground: true,
+        color: 'white',
+      }}
+      _pressed={{
+        bg: 'transparent',
+      }}
+      size={'md'}
+      icon={
+        <Icon
+          ml={1}
+          as={<FontAwesome name={iconText as any} />}
+          color={'white'}
+          size={'md'}
+        />
+      }
+      {...props}
+    />
+  </View>
+);
 
 export default function TodoItem({ todo, showDeleteModal }: TodoItemProps) {
   const { color, icon, text, id } = todo;
@@ -30,21 +67,12 @@ export default function TodoItem({ todo, showDeleteModal }: TodoItemProps) {
           size={'lg'}
         />
       </Center>
-      <Text color='white' fontSize={'lg'} fontWeight='bold' flex={1}>
+      <Text color='white' fontSize={'lg'} fontFamily={'bold'} flex={1}>
         {text}
       </Text>
       <IconButton
         mr={2}
-        size={'md'}
-        rounded={'full'}
-        icon={
-          <Icon
-            ml={1}
-            as={<FontAwesome name='pencil' />}
-            color={'white'}
-            size={'md'}
-          />
-        }
+        iconText='pencil'
         bg={'blue.500'}
         onPress={() => {
           navigate('Todo Details', {
@@ -56,15 +84,7 @@ export default function TodoItem({ todo, showDeleteModal }: TodoItemProps) {
         }}
       />
       <IconButton
-        rounded={'full'}
-        icon={
-          <Icon
-            ml={1}
-            as={<FontAwesome name='remove' />}
-            color={'white'}
-            size={'md'}
-          />
-        }
+        iconText='remove'
         bg={'red.500'}
         onPress={() => showDeleteModal(id)}
       />

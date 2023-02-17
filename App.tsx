@@ -1,19 +1,49 @@
 import './src/config/dayjs';
 
-import { NativeBaseProvider, StatusBar } from 'native-base';
-import React from 'react';
+import { NativeBaseProvider, StatusBar, View } from 'native-base';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
+import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
 import theme from './src/config/theme';
 import store from './src/redux/store';
 import AppRoutes from './src/routes';
 
+SplashScreen.preventAutoHideAsync();
+
 const App = () => {
+  const [isAppReady, setAppReady] = useState(false);
+
+  async function _loadAssetsAsync() {
+    await Font.loadAsync({
+      'Ubanist-Medium': require('./src/assets/fonts/Urbanist-Medium.ttf'),
+      'Ubanist-Bold': require('./src/assets/fonts/Urbanist-Bold.ttf'),
+    });
+    setAppReady(true);
+  }
+
+  useEffect(() => {
+    _loadAssetsAsync();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (isAppReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isAppReady]);
+
+  if (!isAppReady) {
+    return null;
+  }
   return (
     <NativeBaseProvider theme={theme}>
-      <Provider store={store}>
-        <StatusBar translucent={false} />
-        <AppRoutes />
-      </Provider>
+      <View onLayout={onLayoutRootView} flex={1}>
+        <Provider store={store}>
+          <StatusBar translucent={false} />
+          <AppRoutes />
+        </Provider>
+      </View>
     </NativeBaseProvider>
   );
 };

@@ -31,7 +31,7 @@ function CreateTaskButton() {
           color={'white'}
           size={'md'}
         />
-        <Text color='white' fontSize={'lg'} fontWeight='bold'>
+        <Text color='white' fontSize={'lg'} fontFamily={'bold'}>
           Crear Tarea
         </Text>
       </Pressable>

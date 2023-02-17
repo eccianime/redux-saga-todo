@@ -43,6 +43,7 @@ function IconList({ icon, setIcon }: IconListProps) {
             size={'xl'}
           />
           <Text
+            fontFamily={'medium'}
             color={item.icon === icon ? 'white' : 'violet.900'}
             fontSize={'sm'}
           >

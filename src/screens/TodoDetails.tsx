@@ -45,11 +45,11 @@ export default function TodoDetails() {
             size={7}
           />
         </Pressable>
-        <Text ml={1} fontSize={'2xl'} color='gray.700' fontWeight={'bold'}>
+        <Text ml={1} fontSize={'2xl'} color='gray.700' fontFamily={'bold'}>
           {`${params?.id ? 'Editar' : 'Crear'} Tarea`}
         </Text>
       </HStack>
-      <Text fontWeight={'bold'} fontSize={'md'} color='gray.700' mb={2}>
+      <Text fontFamily={'bold'} fontSize={'md'} color='gray.700' mb={2}>
         Tarea:
       </Text>
       <Input
@@ -65,11 +65,11 @@ export default function TodoDetails() {
           borderColor: 'violet.500',
         }}
       />
-      <Text fontWeight={'bold'} fontSize={'md'} color='gray.700' mb={2}>
-        Icono:
+      <Text fontFamily={'bold'} fontSize={'md'} color='gray.700' mb={2}>
+        Categoria:
       </Text>
       <IconList icon={icon} setIcon={setIcon} />
-      <Text fontWeight={'bold'} fontSize={'md'} color='gray.700' mb={2}>
+      <Text fontFamily={'bold'} fontSize={'md'} color='gray.700' mb={2}>
         Color:
       </Text>
       <ColorList
@@ -92,7 +92,7 @@ export default function TodoDetails() {
           flexDir='row'
           justifyContent={'center'}
         >
-          <Text color='white' fontSize={'lg'} fontWeight='bold'>
+          <Text color='white' fontSize={'lg'} fontFamily={'bold'}>
             {`${
               loading ? 'Cargando...' : params?.id ? 'Editar' : 'Crear'
             } Tarea`}

@@ -33,16 +33,20 @@ function DayList({ currentDate }: DayListProps) {
             borderRadius={'lg'}
             onPress={() => dispatch(setCurrentDate(day.format('DD/MM/YY')))}
           >
-            <Text color='white'>{day.format('ddd').toUpperCase()}</Text>
+            <Text color='white' fontFamily={'medium'}>
+              {day.format('ddd').toUpperCase()}
+            </Text>
             <Text
               lineHeight={'xs'}
               color='white'
-              fontWeight={'bold'}
+              fontFamily={'bold'}
               fontSize='2xl'
             >
               {day.format('DD')}
             </Text>
-            <Text color='white'>{day.format('MMM').toUpperCase()}</Text>
+            <Text color='white' fontFamily={'medium'}>
+              {day.format('MMM').toUpperCase()}
+            </Text>
           </Pressable>
         );
       })}

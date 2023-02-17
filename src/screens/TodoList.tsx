@@ -20,7 +20,7 @@ const TodoList = () => {
 
   return (
     <BackgroundContainer>
-      <Text fontSize={'2xl'} color='gray.700' fontWeight={'bold'} mb={5}>
+      <Text fontSize={'2xl'} color='gray.700' fontFamily={'bold'} mb={5}>
         Lista de Tareas
       </Text>
       <DayList currentDate={currentDate} />
