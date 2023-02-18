@@ -4,17 +4,19 @@ import { TodoTypes, Todo } from './types';
 export const getTodos = (date?: string) =>
   action(TodoTypes.GET_TODOS, { date });
 
-export const addTodo = (text: string, icon: string, color: string) =>
-  action(TodoTypes.ADD_TODO, { text, icon, color });
+export const addTodo = (title: string, description: string, category: string) =>
+  action(TodoTypes.ADD_TODO, { title, description, category });
 
 export const updateTodo = (
-  todoId: string,
-  text: string,
-  icon: string,
-  color: string
-) => action(TodoTypes.UPDATE_TODO, { id: todoId, text, icon, color });
+  id: string,
+  title: string,
+  description: string,
+  category: string
+) => action(TodoTypes.UPDATE_TODO, { id, title, description, category });
 
 export const deleteTodo = (id: string) => action(TodoTypes.DELETE_TODO, { id });
+export const toggleTodoComplete = (id: string, isCompleted: boolean) =>
+  action(TodoTypes.TOGGLE_TODO_COMPLETE, { id, isCompleted });
 
 export const setCurrentDate = (date: string) =>
   action(TodoTypes.SET_CURRENT_DATE, { date });

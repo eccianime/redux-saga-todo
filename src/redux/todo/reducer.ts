@@ -17,12 +17,6 @@ const todoReducer: Reducer<TodoState> = (state = INITIAL_STATE, action) => {
         loading: true,
       };
     }
-    case TodoTypes.GET_TODOS: {
-      return {
-        ...state,
-        data: [],
-      };
-    }
     case TodoTypes.LOADING_SUCCESS: {
       return {
         ...state,

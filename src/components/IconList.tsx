@@ -14,9 +14,11 @@ function IconList({ icon, setIcon }: IconListProps) {
       bg='violet.100'
       borderRadius='md'
       p={1}
+      borderColor={'violet.600'}
+      borderWidth={1}
       mb={5}
       showsVerticalScrollIndicator={false}
-      maxH={'1/3'}
+      minH={'1/3'}
       numColumns={4}
       keyExtractor={(item) => item.icon}
       data={CATEGORIES}
@@ -35,16 +37,16 @@ function IconList({ icon, setIcon }: IconListProps) {
           onPress={() => {
             setIcon(item.icon === icon ? undefined : item.icon);
           }}
-          bg={item.icon === icon ? 'violet.900' : 'transparent'}
+          bg={item.icon === icon ? item.color : 'transparent'}
         >
           <Icon
             as={<Ionicons name={item.icon as any} />}
-            color={item.icon === icon ? 'white' : 'violet.900'}
+            color={item.icon === icon ? 'white' : item.color}
             size={'xl'}
           />
           <Text
             fontFamily={'medium'}
-            color={item.icon === icon ? 'white' : 'violet.900'}
+            color={item.icon === icon ? 'white' : item.color}
             fontSize={'sm'}
           >
             {item.name}

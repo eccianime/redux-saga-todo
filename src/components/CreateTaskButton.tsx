@@ -7,10 +7,10 @@ function CreateTaskButton() {
   const { navigate } = useAppNavigation();
 
   const handleGoToCreate = () => {
-    navigate('Todo Details', {});
+    navigate('Todo Details');
   };
   return (
-    <View borderRadius={'lg'} overflow={'hidden'} my={5}>
+    <View borderRadius={'lg'} overflow={'hidden'} my={5} px={5}>
       <Pressable
         w={'full'}
         android_ripple={{

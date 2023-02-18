@@ -1,41 +1,96 @@
 import { FlatList, VStack } from 'native-base';
 import { useState } from 'react';
-import { useAppDispatch } from '../hooks';
-import { deleteTodo } from '../redux/todo/actions';
+import { useAppDispatch, useAppNavigation } from '../hooks';
+import { deleteTodo, toggleTodoComplete } from '../redux/todo/actions';
 import { Todo } from '../redux/todo/types';
 import ModalDelete from './ModalDelete';
+import ModalTodoDetails from './ModalTodoDetails';
 import NoTasks from './NoTasks';
 import TodoItem from './TodoItem';
 
 type TodoFlatListProps = { data: Todo[] };
 
-type ModalProps = {
-  visible: boolean;
-  id?: string;
+type HiddenModalProps = {
+  visible: false;
 };
 
+type ModalProps =
+  | HiddenModalProps
+  | {
+      visible: true;
+      id: string;
+    };
+
+type TodoModalProps =
+  | HiddenModalProps
+  | ({
+      visible: true;
+    } & Todo);
+
 export default function TodoFlatList({ data }: TodoFlatListProps) {
-  const [modalData, setModalData] = useState<ModalProps>({
+  const [modalDeleteData, setModalDeleteData] = useState<ModalProps>({
     visible: false,
-    id: undefined,
+  });
+  const [modalTodoData, setModalTodoData] = useState<TodoModalProps>({
+    visible: false,
   });
 
   const dispatch = useAppDispatch();
 
   const handleDelete = () => {
-    if (modalData?.id) {
-      dispatch(deleteTodo(modalData.id));
-      setModalData({ visible: false });
+    if (modalDeleteData.visible) {
+      dispatch(deleteTodo(modalDeleteData.id));
+      setModalDeleteData({ visible: false });
     }
   };
 
+  const handleMarkTodoComplete = (id: string, isCompleted: boolean) => {
+    dispatch(toggleTodoComplete(id, isCompleted));
+  };
+
+  const { navigate } = useAppNavigation();
+
   return (
-    <VStack flex={1}>
+    <VStack flex={1} px={5}>
       <ModalDelete
-        isOpen={modalData.visible}
-        hideModal={() => setModalData({ visible: false })}
+        isOpen={modalDeleteData.visible}
+        hideModal={() => setModalDeleteData({ visible: false })}
         handleDelete={handleDelete}
-        taskText={data.find((task) => task.id === modalData.id)?.text || ''}
+        title={
+          modalDeleteData.visible
+            ? data.find((task) => task.id === modalDeleteData.id)?.title
+            : ''
+        }
+      />
+      <ModalTodoDetails
+        isOpen={modalTodoData.visible}
+        hideModal={() => setModalTodoData({ visible: false })}
+        handleDelete={() =>
+          modalTodoData.visible &&
+          setModalDeleteData({
+            visible: true,
+            id: modalTodoData.id,
+          })
+        }
+        handleEdit={() => {
+          if (modalTodoData.visible) {
+            setModalTodoData({ visible: false });
+            navigate('Todo Details', {
+              ...modalTodoData,
+            });
+          }
+        }}
+        handleComplete={() => {
+          if (modalTodoData.visible) {
+            handleMarkTodoComplete(modalTodoData.id, modalTodoData.isCompleted);
+            setModalTodoData({ visible: false });
+          }
+        }}
+        data={
+          modalTodoData.visible
+            ? data.find((task) => task.id === modalTodoData.id)
+            : undefined
+        }
       />
       {data.length > 0 ? (
         <FlatList
@@ -45,9 +100,18 @@ export default function TodoFlatList({ data }: TodoFlatListProps) {
           renderItem={({ item }) => (
             <TodoItem
               todo={item}
-              showDeleteModal={(id: string) =>
-                setModalData({ visible: true, id })
+              toggleComplete={() =>
+                handleMarkTodoComplete(item.id, item.isCompleted)
               }
+              showTodoModal={() => {
+                const target = data.find((todo) => todo.id === item.id);
+                if (target) {
+                  setModalTodoData({
+                    visible: true,
+                    ...target,
+                  });
+                }
+              }}
             />
           )}
         />

@@ -33,16 +33,23 @@ function* getTodos(action: GetTodosAction) {
 
 function* addTodo(action: AddTodoAction): Generator<any, any, any> {
   yield put(loadStart());
-  const { text, icon, color } = action.payload;
+  const { title, description, category } = action.payload;
   const date = yield select((state) => state.todos.currentDate);
-  yield call(FirebaseTodos.addTodo, text, icon, color, date);
+  yield call(FirebaseTodos.addTodo, title, description, category, date);
   yield call(getTodos, { type: TodoTypes.GET_TODOS });
 }
 
 function* updateTodo(action: UpdateTodoAction) {
   yield put(loadStart());
-  const { text, id, icon, color } = action.payload;
-  yield call(FirebaseTodos.updateTodo, id, text, icon, color);
+  const { title, id, category, description } = action.payload;
+  yield call(FirebaseTodos.updateTodo, id, title, description, category);
+  yield call(getTodos, { type: TodoTypes.GET_TODOS });
+}
+
+function* toggleTodoComplete(action: UpdateTodoAction) {
+  yield put(loadStart());
+  const { id, isCompleted } = action.payload;
+  yield call(FirebaseTodos.updateTodoComplete, id, isCompleted);
   yield call(getTodos, { type: TodoTypes.GET_TODOS });
 }
 
@@ -58,4 +65,5 @@ export const todoSagas = [
   takeEvery(TodoTypes.ADD_TODO, addTodo),
   takeEvery(TodoTypes.UPDATE_TODO, updateTodo),
   takeEvery(TodoTypes.DELETE_TODO, deleteTodo),
+  takeEvery(TodoTypes.TOGGLE_TODO_COMPLETE, toggleTodoComplete),
 ];

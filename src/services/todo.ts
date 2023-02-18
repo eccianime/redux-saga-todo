@@ -17,20 +17,27 @@ export const getTodos = async (date?: string) => {
     );
     const todos: Todo[] = [];
     querySnapshot.forEach((doc) => {
-      const { text, date, icon, color, created_at, updated_at } = doc.data();
+      const {
+        title,
+        date,
+        category,
+        updated_at,
+        description,
+        isCompleted,
+        created_at,
+      } = doc.data();
       todos.push({
         id: doc.id,
-        text,
+        title,
+        description,
         date,
-        icon,
-        color,
-        created_at,
+        isCompleted,
+        category,
         updated_at,
+        created_at,
       });
     });
-    return todos.sort(
-      (a, b) => b.updated_at - a.updated_at || b.created_at - a.created_at
-    );
+    return todos.sort((a, b) => b.created_at - a.created_at);
   } catch (error) {
     console.log(error);
     return null;
@@ -38,17 +45,18 @@ export const getTodos = async (date?: string) => {
 };
 
 export const addTodo = async (
-  text: string,
-  icon: string,
-  color: string,
+  title: string,
+  description: string,
+  category: string,
   date: string
 ) => {
   try {
     await setDoc(doc(db, 'todos', Math.random().toString().split('.')[1]), {
-      text,
-      icon,
-      color,
+      title,
+      description,
+      category,
       date,
+      isCompleted: false,
       created_at: new Date().getTime(),
       updated_at: new Date().getTime(),
     });
@@ -59,17 +67,34 @@ export const addTodo = async (
 
 export const updateTodo = async (
   id: string,
-  text: string,
-  icon: string,
-  color: string
+  title: string,
+  description: string,
+  category: string
 ) => {
   try {
     await setDoc(
       doc(db, 'todos', id),
       {
-        text,
-        icon,
-        color,
+        title,
+        description,
+        category,
+        updated_at: new Date().getTime(),
+      },
+      {
+        merge: true,
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateTodoComplete = async (id: string, isCompleted?: boolean) => {
+  try {
+    await setDoc(
+      doc(db, 'todos', id),
+      {
+        isCompleted: !isCompleted,
         updated_at: new Date().getTime(),
       },
       {

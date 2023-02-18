@@ -7,12 +7,15 @@ import {
   View,
 } from 'native-base';
 import { memo } from 'react';
+import { Todo } from '../redux/todo/types';
 
-type ModalDeleteProps = {
+type ModalTodoDetailsProps = {
   isOpen: boolean;
   hideModal: () => void;
   handleDelete: () => void;
-  title?: string;
+  handleEdit: () => void;
+  handleComplete: () => void;
+  data?: Todo;
 };
 
 type ButtonProps = IButtonProps & {
@@ -22,42 +25,51 @@ type ButtonProps = IButtonProps & {
 };
 
 const Button = ({ text, mr, ml, ...props }: ButtonProps) => (
-  <View overflow={'hidden'} mr={mr} ml={ml} borderRadius={'md'} flex={1}>
+  <View overflow={'hidden'} mr={mr} ml={ml} borderRadius={'md'} w={'25'}>
     <Pressable
       android_ripple={{
         foreground: true,
         color: 'white',
       }}
       borderRadius={'md'}
-      h={10}
+      h={8}
       alignItems='center'
       justifyContent={'center'}
       {...props}
     >
-      <Text fontFamily={'bold'} color={'white'} fontSize={'xl'}>
+      <Text fontFamily={'bold'} color={'white'} fontSize={'md'}>
         {text}
       </Text>
     </Pressable>
   </View>
 );
 
-function ModalDelete({
+function ModalTodoDetails({
   isOpen,
   hideModal,
   handleDelete,
-  title,
-}: ModalDeleteProps) {
+  handleEdit,
+  handleComplete,
+  data,
+}: ModalTodoDetailsProps) {
   return (
     <Modal isOpen={isOpen} onClose={hideModal}>
       <Modal.Content bg={'violet.600'} w='lg' p={5} pt={5}>
+        <Modal.CloseButton
+          _pressed={{
+            bg: 'transparent',
+          }}
+          _icon={{ color: 'white' }}
+        />
         <Text
+          px={4}
           fontFamily={'bold'}
           color={'white'}
           fontSize={'lg'}
           mb={1}
           textAlign='center'
         >
-          ¿Seguro que quieres eliminar este elemento?
+          {data?.title}
         </Text>
         <View
           borderBottomWidth={1}
@@ -65,16 +77,17 @@ function ModalDelete({
           borderBottomColor={'white'}
           mb={3}
         />
-        <Text color={'white'} fontFamily={'medium'} fontSize='md' mb={10}>
-          {title}
+        <Text color={'white'} fontFamily={'medium'} fontSize='md' mb={5}>
+          {data?.description}
         </Text>
-        <HStack w={'full'}>
-          <Button text='Si' onPress={handleDelete} mr={2} bg={'#66BB6A'} />
-          <Button text='No' onPress={hideModal} ml={2} bg={'#EF5350'} />
+        <HStack w={'full'} justifyContent='space-between'>
+          <Button text='Editar' onPress={handleEdit} bg={'blue.600'} />
+          <Button text='Eliminar' onPress={handleDelete} bg={'danger.600'} />
+          <Button text='Concluir' onPress={handleComplete} bg={'green.600'} />
         </HStack>
       </Modal.Content>
     </Modal>
   );
 }
 
-export default memo(ModalDelete);
+export default memo(ModalTodoDetails);

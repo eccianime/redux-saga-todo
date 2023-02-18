@@ -6,8 +6,9 @@ export default extendTheme({
     bold: 'Ubanist-Bold',
   },
   sizes: {
-    50: 200,
     15: 60,
     18: 72,
+    25: 100,
+    50: 200,
   },
 });

@@ -10,7 +10,7 @@ export default function BackgroundContainer({
 }) {
   return (
     <ImageBackground source={BackgroundImage} style={{ flex: 1 }}>
-      <VStack px={5} pt={5} flex={1}>
+      <VStack pt={5} flex={1}>
         {children}
       </VStack>
     </ImageBackground>

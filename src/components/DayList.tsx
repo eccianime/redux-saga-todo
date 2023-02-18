@@ -11,7 +11,7 @@ type DayListProps = {
 function DayList({ currentDate }: DayListProps) {
   const dispatch = useAppDispatch();
   return (
-    <HStack w={'full'} justifyContent='space-between' mb={5}>
+    <HStack w={'full'} justifyContent='space-between' mb={5} px={5}>
       {new Array(5).fill(0).map((_, i, a) => {
         const day = dayjs(currentDate, 'DD/MM/YY').add(i - 2, 'day');
         return (

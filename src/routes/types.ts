@@ -1,11 +1,6 @@
-export type TodoRouteParams = {
-  id?: string;
-  text?: string;
-  icon?: string;
-  color?: string;
-};
+import { Todo } from '../redux/todo/types';
 
 export type TodoParamList = {
   Todo: undefined;
-  'Todo Details': TodoRouteParams;
+  'Todo Details': Todo | undefined;
 };

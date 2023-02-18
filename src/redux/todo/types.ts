@@ -7,49 +7,56 @@ export enum TodoTypes {
   UPDATE_TODO = '@todo/UPDATE_TODO',
   DELETE_TODO = '@todo/DELETE_TODO',
   SET_CURRENT_DATE = '@todo/SET_CURRENT_DATE',
+  TOGGLE_TODO_COMPLETE = '@todo/TOGGLE_TODO_COMPLETE',
 }
 
-export interface Todo {
-  id: string;
-  text: string;
-  date?: string;
+export type Category = {
   icon: string;
-  color: string;
-  created_at: number;
-  updated_at: number;
-}
+  name: string;
+};
 
-export interface TodoState {
+export type Todo = {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  isCompleted: boolean;
+  date: string;
+  updated_at: number;
+  created_at: number;
+};
+
+export type TodoState = {
   data: Todo[];
   loading: boolean;
   error: boolean;
   currentDate: string;
-}
+};
 
-export interface GetTodosAction {
+export type GetTodosAction = {
   type: TodoTypes.GET_TODOS;
   payload?: {
     date: string;
   };
-}
+};
 
-export interface AddTodoAction {
+export type AddTodoAction = {
   type: TodoTypes.ADD_TODO;
   payload: {
-    text: string;
-    icon: string;
-    color: string;
+    title: string;
+    description: string;
+    category: string;
   };
-}
+};
 
-export interface UpdateTodoAction {
+export type UpdateTodoAction = {
   type: TodoTypes.UPDATE_TODO;
   payload: Todo;
-}
+};
 
-export interface DeleteTodoAction {
+export type DeleteTodoAction = {
   type: TodoTypes.DELETE_TODO;
   payload: {
     id: string;
   };
-}
+};
