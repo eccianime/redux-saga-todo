@@ -1,3 +1,5 @@
+import { Ionicons } from '@expo/vector-icons';
+
 export enum TodoTypes {
   LOADING_START = '@todo/LOADING_START',
   LOADING_SUCCESS = '@todo/LOADING_SUCCESS',
@@ -11,15 +13,16 @@ export enum TodoTypes {
 }
 
 export type Category = {
-  icon: string;
+  icon: keyof typeof Ionicons.glyphMap;
   name: string;
+  color: string;
 };
 
 export type Todo = {
   id: string;
   title: string;
   description: string;
-  category: string;
+  category: keyof typeof Ionicons.glyphMap;
   isCompleted: boolean;
   date: string;
   updated_at: number;

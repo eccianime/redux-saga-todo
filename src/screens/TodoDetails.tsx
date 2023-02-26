@@ -1,17 +1,14 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
+import { VStack } from 'native-base';
+import React, { useCallback, useState } from 'react';
 import {
-  HStack,
-  Icon,
-  Input,
-  Pressable,
-  Text,
-  View,
-  VStack,
-} from 'native-base';
-import React, { useState } from 'react';
-import BackgroundContainer from '../components/BackgroundContainer';
-import IconList from '../components/IconList';
+  BackgroundContainer,
+  BasicButton,
+  FormInput,
+  FormLabel,
+  Header,
+} from '../components';
+import IconList from '../components/lists/IconList';
 import { useAppDispatch, useAppNavigation, useAppSelector } from '../hooks';
 import { addTodo, updateTodo } from '../redux/todo/actions';
 import { Todo } from '../redux/todo/types';
@@ -22,15 +19,21 @@ export default function TodoDetails() {
   const { goBack } = useAppNavigation();
   const { loading } = useAppSelector((state) => state.todos);
 
-  const [title, setTaskTitle] = useState<string>(params?.title || '');
-  const [description, setTaskDescription] = useState<string>(
-    params?.description || ''
-  );
-  const [category, setCategory] = useState<string | undefined>(
-    params?.category
-  );
+  const [formData, setFormData] = useState({
+    title: params?.title || '',
+    description: params?.description || '',
+    category: params?.category || '',
+  });
 
-  const handleCreateOrEdit = () => {
+  const handleFormChange = useCallback((field: string, value?: string) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [field]: value,
+    }));
+  }, []);
+
+  const handleCreateOrEdit = useCallback(() => {
+    const { title, description, category } = formData;
     if (title && description && category) {
       if (params?.id) {
         dispatch(updateTodo(params.id, title, description, category));
@@ -40,88 +43,46 @@ export default function TodoDetails() {
         goBack();
       }
     }
-  };
+  }, [formData, dispatch, goBack, params?.id]);
 
-  const canEditOrCreate = description && category && title;
+  const canEditOrCreate = Object.values(formData).every(Boolean);
 
   return (
     <BackgroundContainer>
       <VStack flex={1} px={5}>
-        <HStack alignItems={'center'} mb={5}>
-          <Pressable flexDir={'row'} alignItems='center' onPress={goBack}>
-            <Icon
-              as={<Ionicons name='arrow-back' />}
-              color={'gray.700'}
-              size={7}
-            />
-          </Pressable>
-          <Text ml={1} fontSize={'2xl'} color='gray.700' fontFamily={'bold'}>
-            {`${params?.id ? 'Editar' : 'Crear'} Tarea`}
-          </Text>
-        </HStack>
-        <Text fontFamily={'bold'} fontSize={'md'} color='gray.700' mb={2}>
-          Titulo:
-        </Text>
-        <Input
+        <Header hasBack title={`${params?.id ? 'Editar' : 'Crear'} Tarea`} />
+        <FormLabel label='Titulo:' />
+        <FormInput
           h={10}
-          bg='violet.100'
-          borderColor={'violet.600'}
-          fontSize={18}
-          fontFamily='medium'
-          value={title}
-          onChangeText={setTaskTitle}
-          mb={5}
-          _focus={{
-            bg: 'violet.200',
-            borderColor: 'violet.500',
-          }}
+          value={formData.title}
+          onChangeText={(title: string) => handleFormChange('title', title)}
         />
-        <Text fontFamily={'bold'} fontSize={'md'} color='gray.700' mb={2}>
-          Descripción:
-        </Text>
-        <Input
+        <FormLabel label='Descripción:' />
+        <FormInput
           multiline
           numberOfLines={5}
           textAlignVertical='top'
-          bg='violet.100'
-          fontFamily='medium'
-          borderColor={'violet.600'}
-          fontSize={18}
-          value={description}
-          onChangeText={setTaskDescription}
-          mb={5}
-          _focus={{
-            bg: 'violet.200',
-            borderColor: 'violet.500',
-          }}
+          value={formData.description}
+          onChangeText={(description: string) =>
+            handleFormChange('description', description)
+          }
         />
-        <Text fontFamily={'bold'} fontSize={'md'} color='gray.700' mb={2}>
-          Categoria:
-        </Text>
-        <IconList icon={category} setIcon={setCategory} />
-        <View borderRadius={'lg'} overflow={'hidden'} mb={5}>
-          <Pressable
-            disabled={!canEditOrCreate || loading}
-            w={'full'}
-            android_ripple={{
-              foreground: true,
-              color: 'white',
-            }}
-            alignItems='center'
-            py={2}
-            bg={canEditOrCreate ? 'violet.700' : 'violet.300'}
-            borderRadius={'lg'}
-            onPress={handleCreateOrEdit}
-            flexDir='row'
-            justifyContent={'center'}
-          >
-            <Text color='white' fontSize={'lg'} fontFamily={'bold'}>
-              {`${
-                loading ? 'Cargando...' : params?.id ? 'Editar' : 'Crear'
-              } Tarea`}
-            </Text>
-          </Pressable>
-        </View>
+        <FormLabel label='Categoria:' />
+        <IconList
+          icon={formData.category}
+          setIcon={(category?: string) =>
+            handleFormChange('category', category)
+          }
+        />
+        <BasicButton
+          icon={params?.id ? 'edit' : 'plus'}
+          disabled={!canEditOrCreate || loading}
+          bg={canEditOrCreate ? 'violet.700' : 'violet.300'}
+          text={`${
+            loading ? 'Cargando...' : params?.id ? 'Editar' : 'Crear'
+          } Tarea`}
+          onPress={handleCreateOrEdit}
+        />
       </VStack>
     </BackgroundContainer>
   );

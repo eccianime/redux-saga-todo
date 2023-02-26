@@ -47,11 +47,7 @@ export default function TodoItem({
           rounded='xl'
           mr={2}
         >
-          <Icon
-            as={<Ionicons name={category as any} />}
-            color={'white'}
-            size={'lg'}
-          />
+          <Icon as={<Ionicons name={category} />} color={'white'} size={'lg'} />
         </Center>
         <VStack flex={1} mr={2}>
           <Text

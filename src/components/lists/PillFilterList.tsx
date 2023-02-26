@@ -1,19 +1,19 @@
 import { FlatList, Pressable, Text, VStack } from 'native-base';
 import { memo } from 'react';
 
-type PillFilterProps = {
+type PillFilterListProps = {
   title: string;
   selectedValue: string;
   setSelectedValue: (selectedValue: string) => void;
   data: string[];
 };
 
-function PillFilter({
+function PillFilterList({
   title,
   selectedValue,
   setSelectedValue,
   data,
-}: PillFilterProps) {
+}: PillFilterListProps) {
   return (
     <VStack mb={3}>
       <Text px={5} fontSize={'md'} color='gray.700' fontFamily={'bold'} mb={2}>
@@ -44,4 +44,4 @@ function PillFilter({
     </VStack>
   );
 }
-export default memo(PillFilter);
+export default memo(PillFilterList);

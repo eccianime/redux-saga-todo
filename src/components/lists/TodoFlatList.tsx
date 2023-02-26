@@ -1,12 +1,12 @@
 import { FlatList, VStack } from 'native-base';
 import { useState } from 'react';
-import { useAppDispatch, useAppNavigation } from '../hooks';
-import { deleteTodo, toggleTodoComplete } from '../redux/todo/actions';
-import { Todo } from '../redux/todo/types';
-import ModalDelete from './ModalDelete';
-import ModalTodoDetails from './ModalTodoDetails';
-import NoTasks from './NoTasks';
-import TodoItem from './TodoItem';
+import { useAppDispatch, useAppNavigation } from '../../hooks';
+import { deleteTodo, toggleTodoComplete } from '../../redux/todo/actions';
+import { Todo } from '../../redux/todo/types';
+import ModalDelete from '../modals/ModalDelete';
+import ModalTodoDetails from '../modals/ModalTodoDetails';
+import NoTasks from '../NoTasks';
+import TodoItem from '../TodoItem';
 
 type TodoFlatListProps = { data: Todo[] };
 

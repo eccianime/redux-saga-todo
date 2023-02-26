@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { HStack, Pressable, Text } from 'native-base';
 import { memo } from 'react';
-import { useAppDispatch } from '../hooks';
-import { setCurrentDate } from '../redux/todo/actions';
+import { useAppDispatch } from '../../hooks';
+import { setCurrentDate } from '../../redux/todo/actions';
 
 type DayListProps = {
   currentDate: string;

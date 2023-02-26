@@ -1,10 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { FlatList, Icon, Pressable, Text } from 'native-base';
 import { memo } from 'react';
-import { CATEGORIES } from '../config/constants';
+import { CATEGORIES } from '../../config/constants';
 
 type IconListProps = {
-  icon?: string;
+  icon: string;
   setIcon: (icon?: string) => void;
 };
 
@@ -35,12 +35,12 @@ function IconList({ icon, setIcon }: IconListProps) {
             color: 'white',
           }}
           onPress={() => {
-            setIcon(item.icon === icon ? undefined : item.icon);
+            setIcon(item.icon === icon ? '' : item.icon);
           }}
           bg={item.icon === icon ? item.color : 'transparent'}
         >
           <Icon
-            as={<Ionicons name={item.icon as any} />}
+            as={<Ionicons name={item.icon} />}
             color={item.icon === icon ? 'white' : item.color}
             size={'xl'}
           />

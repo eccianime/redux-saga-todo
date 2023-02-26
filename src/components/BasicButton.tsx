@@ -1,16 +1,22 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { Icon, Pressable, Text, View } from 'native-base';
+import { Icon, IPressableProps, Pressable, Text, View } from 'native-base';
+import { IViewProps } from 'native-base/lib/typescript/components/basic/View/types';
 import { memo } from 'react';
-import { useAppNavigation } from '../hooks';
 
-function CreateTaskButton() {
-  const { navigate } = useAppNavigation();
+type BasicButtonProps = IPressableProps & {
+  text: string;
+  icon: keyof typeof FontAwesome.glyphMap;
+  containerProps?: IViewProps;
+};
 
-  const handleGoToCreate = () => {
-    navigate('Todo Details');
-  };
+function BasicButton({
+  text,
+  containerProps,
+  icon,
+  ...props
+}: BasicButtonProps) {
   return (
-    <View borderRadius={'lg'} overflow={'hidden'} my={5} px={5}>
+    <View borderRadius={'lg'} overflow={'hidden'} my={5} {...containerProps}>
       <Pressable
         w={'full'}
         android_ripple={{
@@ -21,22 +27,22 @@ function CreateTaskButton() {
         py={2}
         bg={'violet.700'}
         borderRadius={'lg'}
-        onPress={handleGoToCreate}
         flexDir='row'
         justifyContent={'center'}
+        {...props}
       >
         <Icon
           mr={1}
-          as={<FontAwesome name='plus' />}
+          as={<FontAwesome name={icon} />}
           color={'white'}
           size={'md'}
         />
         <Text color='white' fontSize={'lg'} fontFamily={'bold'}>
-          Crear Tarea
+          {text}
         </Text>
       </Pressable>
     </View>
   );
 }
 
-export default memo(CreateTaskButton);
+export default memo(BasicButton);

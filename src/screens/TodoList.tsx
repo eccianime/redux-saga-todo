@@ -2,23 +2,24 @@ import { Text } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   BackgroundContainer,
-  CreateTaskButton,
+  BasicButton,
   DayList,
   Loader,
+  PillFilterList,
+  TodoFlatList,
 } from '../components';
-import PillFilter from '../components/PillFilter';
-import TodoFlatList from '../components/TodoFlatList';
 import {
   CATEGORIES,
   TASK_CATEGORY_ZERO,
   TASK_STATUSES,
 } from '../config/constants';
-import { useAppDispatch, useAppSelector } from '../hooks';
+import { useAppDispatch, useAppNavigation, useAppSelector } from '../hooks';
 import { getTodos } from '../redux/todo/actions';
 
 const TodoList = () => {
   const { data, loading, currentDate } = useAppSelector((state) => state.todos);
   const dispatch = useAppDispatch();
+  const { navigate } = useAppNavigation();
 
   const getCategories = useCallback(() => {
     const categoryNames = [TASK_CATEGORY_ZERO];
@@ -56,6 +57,10 @@ const TodoList = () => {
     });
   };
 
+  const handleGoToCreate = () => {
+    navigate('Todo Details');
+  };
+
   useEffect(() => {
     dispatch(getTodos(currentDate));
     setSelectedCategory(TASK_CATEGORY_ZERO.name);
@@ -70,13 +75,13 @@ const TodoList = () => {
       <DayList currentDate={currentDate} />
       {!!data?.length && (
         <>
-          <PillFilter
+          <PillFilterList
             title='Categoria:'
             data={getCategories().map((category) => category.name)}
             selectedValue={selectedCategory}
             setSelectedValue={setSelectedCategory}
           />
-          <PillFilter
+          <PillFilterList
             title='Estado:'
             data={TASK_STATUSES}
             selectedValue={selectedStatus}
@@ -85,7 +90,12 @@ const TodoList = () => {
         </>
       )}
       {loading ? <Loader /> : <TodoFlatList data={filteredData()} />}
-      <CreateTaskButton />
+      <BasicButton
+        icon='plus'
+        text={'Crear Tarea'}
+        containerProps={{ mx: 5 }}
+        onPress={handleGoToCreate}
+      />
     </BackgroundContainer>
   );
 };

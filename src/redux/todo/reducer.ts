@@ -6,7 +6,7 @@ const INITIAL_STATE: TodoState = {
   data: [],
   error: false,
   loading: false,
-  currentDate: dayjs(new Date()).format('DD/MM/YY'),
+  currentDate: dayjs().format('DD/MM/YY'),
 };
 
 const todoReducer: Reducer<TodoState> = (state = INITIAL_STATE, action) => {

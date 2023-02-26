@@ -1,4 +1,6 @@
-export const CATEGORIES = [
+import { Category } from '../redux/todo/types';
+
+export const CATEGORIES: Category[] = [
   { icon: 'md-briefcase', name: 'Trabajo', color: '#e11d48' },
   { icon: 'md-home', name: 'Hogar', color: '#be123c' },
   { icon: 'md-basket', name: 'Compras', color: '#db2777' },

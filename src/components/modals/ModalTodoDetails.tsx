@@ -7,7 +7,7 @@ import {
   View,
 } from 'native-base';
 import { memo } from 'react';
-import { Todo } from '../redux/todo/types';
+import { Todo } from '../../redux/todo/types';
 
 type ModalTodoDetailsProps = {
   isOpen: boolean;

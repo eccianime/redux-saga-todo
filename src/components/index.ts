@@ -1,6 +1,12 @@
-export { default as BackgroundContainer } from './BackgroundContainer';
-export { default as CreateTaskButton } from './CreateTaskButton';
-export { default as DayList } from './DayList';
+export { default as BackgroundContainer } from './common/BackgroundContainer';
+export { default as BasicButton } from './BasicButton';
+export { default as DayList } from './lists/DayList';
+export { default as IconList } from './lists/IconList';
+export { default as TodoFlatList } from './lists/TodoFlatList';
+export { default as PillFilterList } from './lists/PillFilterList';
 export { default as Loader } from './Loader';
 export { default as NoTasks } from './NoTasks';
 export { default as TodoItem } from './TodoItem';
+export { default as FormInput } from './forms/FormInput';
+export { default as FormLabel } from './forms/FormLabel';
+export { default as Header } from './common/Header';
