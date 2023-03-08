@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import 'dayjs/locale/es-us';
+import 'dayjs/locale/pt-br';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-dayjs.locale('es-us');
+dayjs.locale('pt-br');
 dayjs.extend(customParseFormat);

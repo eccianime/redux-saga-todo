@@ -1,12 +1,6 @@
-import {
-  HStack,
-  IButtonProps,
-  Modal,
-  Pressable,
-  Text,
-  View,
-} from 'native-base';
+import { HStack, Modal, Text, View } from 'native-base';
 import { memo } from 'react';
+import ModalButton from '../buttons/ModalButton';
 
 type ModalDeleteProps = {
   isOpen: boolean;
@@ -14,32 +8,6 @@ type ModalDeleteProps = {
   handleDelete: () => void;
   title?: string;
 };
-
-type ButtonProps = IButtonProps & {
-  text: string;
-  mr?: number;
-  ml?: number;
-};
-
-const Button = ({ text, mr, ml, ...props }: ButtonProps) => (
-  <View overflow={'hidden'} mr={mr} ml={ml} borderRadius={'md'} flex={1}>
-    <Pressable
-      android_ripple={{
-        foreground: true,
-        color: 'white',
-      }}
-      borderRadius={'md'}
-      h={10}
-      alignItems='center'
-      justifyContent={'center'}
-      {...props}
-    >
-      <Text fontFamily={'bold'} color={'white'} fontSize={'xl'}>
-        {text}
-      </Text>
-    </Pressable>
-  </View>
-);
 
 function ModalDelete({
   isOpen,
@@ -57,7 +25,7 @@ function ModalDelete({
           mb={1}
           textAlign='center'
         >
-          ¿Seguro que quieres eliminar este elemento?
+          Tem certeza que deseja eliminar esta tarefa?
         </Text>
         <View
           borderBottomWidth={1}
@@ -69,8 +37,13 @@ function ModalDelete({
           {title}
         </Text>
         <HStack w={'full'}>
-          <Button text='Si' onPress={handleDelete} mr={2} bg={'#66BB6A'} />
-          <Button text='No' onPress={hideModal} ml={2} bg={'#EF5350'} />
+          <ModalButton
+            text='Sim'
+            onPress={handleDelete}
+            mr={2}
+            bg={'#66BB6A'}
+          />
+          <ModalButton text='Não' onPress={hideModal} ml={2} bg={'#EF5350'} />
         </HStack>
       </Modal.Content>
     </Modal>

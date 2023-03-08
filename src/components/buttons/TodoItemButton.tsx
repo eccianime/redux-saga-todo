@@ -9,20 +9,20 @@ import {
   View,
   VStack,
 } from 'native-base';
-import { CATEGORIES } from '../config/constants';
-import { Todo } from '../redux/todo/types';
+import { CATEGORIES } from '../../config/constants';
+import { Todo } from '../../redux/todo/types';
 
-type TodoItemProps = {
+type TodoItemButtonProps = {
   todo: Todo;
   toggleComplete: () => void;
   showTodoModal: () => void;
 };
 
-export default function TodoItem({
+export default function TodoItemButton({
   todo,
   toggleComplete,
   showTodoModal,
-}: TodoItemProps) {
+}: TodoItemButtonProps) {
   const { title, category, isCompleted, created_at } = todo;
   return (
     <View mb={5} overflow='hidden' rounded={'xl'}>

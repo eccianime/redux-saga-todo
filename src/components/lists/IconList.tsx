@@ -1,7 +1,7 @@
-import { Ionicons } from '@expo/vector-icons';
-import { FlatList, Icon, Pressable, Text } from 'native-base';
+import { FlatList } from 'native-base';
 import { memo } from 'react';
 import { CATEGORIES } from '../../config/constants';
+import IconButton from '../buttons/IconButton';
 
 type IconListProps = {
   icon: string;
@@ -23,35 +23,7 @@ function IconList({ icon, setIcon }: IconListProps) {
       keyExtractor={(item) => item.icon}
       data={CATEGORIES}
       renderItem={({ item }) => (
-        <Pressable
-          key={item.icon}
-          h={'20'}
-          w={'1/4'}
-          borderRadius='lg'
-          alignItems='center'
-          justifyContent={'center'}
-          android_ripple={{
-            foreground: true,
-            color: 'white',
-          }}
-          onPress={() => {
-            setIcon(item.icon === icon ? '' : item.icon);
-          }}
-          bg={item.icon === icon ? item.color : 'transparent'}
-        >
-          <Icon
-            as={<Ionicons name={item.icon} />}
-            color={item.icon === icon ? 'white' : item.color}
-            size={'xl'}
-          />
-          <Text
-            fontFamily={'medium'}
-            color={item.icon === icon ? 'white' : item.color}
-            fontSize={'sm'}
-          >
-            {item.name}
-          </Text>
-        </Pressable>
+        <IconButton item={item} icon={icon} setIcon={setIcon} />
       )}
     />
   );

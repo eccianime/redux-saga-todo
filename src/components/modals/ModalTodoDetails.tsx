@@ -1,55 +1,21 @@
-import {
-  HStack,
-  IButtonProps,
-  Modal,
-  Pressable,
-  Text,
-  View,
-} from 'native-base';
+import { HStack, Modal, Text, View } from 'native-base';
 import { memo } from 'react';
 import { Todo } from '../../redux/todo/types';
+import ModalButton from '../buttons/ModalButton';
 
 type ModalTodoDetailsProps = {
   isOpen: boolean;
   hideModal: () => void;
   handleDelete: () => void;
   handleEdit: () => void;
-  handleComplete: () => void;
   data?: Todo;
 };
-
-type ButtonProps = IButtonProps & {
-  text: string;
-  mr?: number;
-  ml?: number;
-};
-
-const Button = ({ text, mr, ml, ...props }: ButtonProps) => (
-  <View overflow={'hidden'} mr={mr} ml={ml} borderRadius={'md'} w={'25'}>
-    <Pressable
-      android_ripple={{
-        foreground: true,
-        color: 'white',
-      }}
-      borderRadius={'md'}
-      h={8}
-      alignItems='center'
-      justifyContent={'center'}
-      {...props}
-    >
-      <Text fontFamily={'bold'} color={'white'} fontSize={'md'}>
-        {text}
-      </Text>
-    </Pressable>
-  </View>
-);
 
 function ModalTodoDetails({
   isOpen,
   hideModal,
   handleDelete,
   handleEdit,
-  handleComplete,
   data,
 }: ModalTodoDetailsProps) {
   return (
@@ -81,9 +47,18 @@ function ModalTodoDetails({
           {data?.description}
         </Text>
         <HStack w={'full'} justifyContent='space-between'>
-          <Button text='Editar' onPress={handleEdit} bg={'blue.600'} />
-          <Button text='Eliminar' onPress={handleDelete} bg={'danger.600'} />
-          <Button text='Concluir' onPress={handleComplete} bg={'green.600'} />
+          <ModalButton
+            mr={2}
+            text='Editar'
+            onPress={handleEdit}
+            bg={'blue.600'}
+          />
+          <ModalButton
+            ml={2}
+            text='Eliminar'
+            onPress={handleDelete}
+            bg={'danger.600'}
+          />
         </HStack>
       </Modal.Content>
     </Modal>

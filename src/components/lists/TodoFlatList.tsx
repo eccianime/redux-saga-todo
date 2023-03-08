@@ -6,7 +6,7 @@ import { Todo } from '../../redux/todo/types';
 import ModalDelete from '../modals/ModalDelete';
 import ModalTodoDetails from '../modals/ModalTodoDetails';
 import NoTasks from '../NoTasks';
-import TodoItem from '../TodoItem';
+import TodoItem from '../buttons/TodoItemButton';
 
 type TodoFlatListProps = { data: Todo[] };
 
@@ -78,12 +78,6 @@ export default function TodoFlatList({ data }: TodoFlatListProps) {
             navigate('Todo Details', {
               ...modalTodoData,
             });
-          }
-        }}
-        handleComplete={() => {
-          if (modalTodoData.visible) {
-            handleMarkTodoComplete(modalTodoData.id, modalTodoData.isCompleted);
-            setModalTodoData({ visible: false });
           }
         }}
         data={

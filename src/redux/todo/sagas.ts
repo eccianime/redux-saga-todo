@@ -70,12 +70,10 @@ function* deleteTodo({ payload: { id } }: DeleteTodoAction) {
   }
 }
 
-const todoSaga = [
+export default [
   takeLatest(TodoTypes.GET_TODOS, getTodos),
   takeLatest(TodoTypes.ADD_TODO, addTodo),
   takeLatest(TodoTypes.UPDATE_TODO, updateTodo),
   takeLatest(TodoTypes.TOGGLE_TODO_COMPLETE, toggleTodoComplete),
   takeLatest(TodoTypes.DELETE_TODO, deleteTodo),
 ];
-
-export default todoSaga;

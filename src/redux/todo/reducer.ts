@@ -9,8 +9,11 @@ const INITIAL_STATE: TodoState = {
   currentDate: dayjs().format('DD/MM/YY'),
 };
 
-const todoReducer: Reducer<TodoState> = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
+const todoReducer: Reducer<TodoState> = (
+  state = INITIAL_STATE,
+  { type, payload }
+) => {
+  switch (type) {
     case TodoTypes.LOADING_START: {
       return {
         ...state,
@@ -22,7 +25,7 @@ const todoReducer: Reducer<TodoState> = (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         error: false,
-        data: action.payload,
+        data: payload,
       };
     }
     case TodoTypes.LOADING_FAILURE: {
@@ -36,7 +39,7 @@ const todoReducer: Reducer<TodoState> = (state = INITIAL_STATE, action) => {
     case TodoTypes.SET_CURRENT_DATE: {
       return {
         ...state,
-        currentDate: action.payload.date,
+        currentDate: payload.date,
       };
     }
     default:

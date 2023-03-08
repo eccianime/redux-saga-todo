@@ -1,10 +1,9 @@
-import { Text } from 'native-base';
+import { Center, Spinner, Text } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   BackgroundContainer,
   BasicButton,
   DayList,
-  Loader,
   PillFilterList,
   TodoFlatList,
 } from '../components';
@@ -67,10 +66,20 @@ const TodoList = () => {
     setSelectedStatus(TASK_STATUSES[0]);
   }, [currentDate]);
 
+  useEffect(() => {
+    if (
+      getCategories().findIndex(
+        (category) => category.name === selectedCategory
+      ) === -1
+    ) {
+      setSelectedCategory(getCategories()[0].name);
+    }
+  }, [data]);
+
   return (
     <BackgroundContainer>
       <Text px={5} fontSize={'2xl'} color='gray.700' fontFamily={'bold'} mb={5}>
-        Lista de Tareas
+        Lista de Tarefas
       </Text>
       <DayList currentDate={currentDate} />
       {!!data?.length && (
@@ -89,10 +98,16 @@ const TodoList = () => {
           />
         </>
       )}
-      {loading ? <Loader /> : <TodoFlatList data={filteredData()} />}
+      {loading ? (
+        <Center flex={1}>
+          <Spinner color='violet.500' size={50} />
+        </Center>
+      ) : (
+        <TodoFlatList data={filteredData()} />
+      )}
       <BasicButton
         icon='plus'
-        text={'Crear Tarea'}
+        text={'Criar Tarefa'}
         containerProps={{ mx: 5 }}
         onPress={handleGoToCreate}
       />

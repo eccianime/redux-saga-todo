@@ -50,14 +50,17 @@ export default function TodoDetails() {
   return (
     <BackgroundContainer>
       <VStack flex={1} px={5}>
-        <Header hasBack title={`${params?.id ? 'Editar' : 'Crear'} Tarea`} />
+        <Header
+          hasBack
+          title={`${params?.id ? 'Modificar' : 'Criar'} Tarefa`}
+        />
         <FormLabel label='Titulo:' />
         <FormInput
           h={10}
           value={formData.title}
           onChangeText={(title: string) => handleFormChange('title', title)}
         />
-        <FormLabel label='Descripción:' />
+        <FormLabel label='Descrição:' />
         <FormInput
           multiline
           numberOfLines={5}
@@ -79,8 +82,8 @@ export default function TodoDetails() {
           disabled={!canEditOrCreate || loading}
           bg={canEditOrCreate ? 'violet.700' : 'violet.300'}
           text={`${
-            loading ? 'Cargando...' : params?.id ? 'Editar' : 'Crear'
-          } Tarea`}
+            loading ? 'Carregando...' : params?.id ? 'Modificar' : 'Criar'
+          } Tarefa`}
           onPress={handleCreateOrEdit}
         />
       </VStack>

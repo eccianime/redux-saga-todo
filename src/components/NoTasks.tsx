@@ -9,7 +9,7 @@ export default function NoTasks() {
         fontFamily={'bold'}
         textAlign='center'
       >
-        No hay tareas con los parámetros ofrecidos
+        Não tem tarefas com os parâmetros fornecidos
       </Text>
     </Center>
   );
