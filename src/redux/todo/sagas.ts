@@ -11,10 +11,10 @@ import {
   UpdateTodoAction,
 } from './types';
 
-function* getTodos(action: GetTodosAction) {
+function* getTodos(action: GetTodosAction): Generator<any, void, unknown> {
   try {
     yield put(loadStart());
-    const { currentDate } = yield appSelect((state) => state.todos);
+    const { currentDate } = yield appSelect((state: any) => state.todos);
     const date = action.payload?.date || currentDate;
     const todos: Todo[] = yield call(FirebaseTodos.getTodos, date);
     yield put(loadSuccess(todos));
@@ -23,51 +23,42 @@ function* getTodos(action: GetTodosAction) {
   }
 }
 
-function* addTodo({
-  payload: { title, description, category },
-}: AddTodoAction): Generator<any, any, any> {
+function* updateTodoApi(
+  action: UpdateTodoAction | DeleteTodoAction,
+  apiFunc: any
+): Generator<any, void, unknown> {
   try {
     yield put(loadStart());
-    const date = yield appSelect((state) => state.todos.currentDate);
-    yield call(FirebaseTodos.addTodo, title, description, category, date);
+    yield call(apiFunc, ...Object.values(action.payload));
     yield call(getTodos, { type: TodoTypes.GET_TODOS });
   } catch (error) {
     console.error(error);
   }
+}
+
+function* addTodo({
+  payload: { title, description, category },
+}: AddTodoAction): Generator<any, void, unknown> {
+  yield* updateTodoApi({ payload: { title, description, category } }, FirebaseTodos.addTodo);
 }
 
 function* updateTodo({
   payload: { id, title, description, category },
-}: UpdateTodoAction) {
-  try {
-    yield put(loadStart());
-    yield call(FirebaseTodos.updateTodo, id, title, description, category);
-    yield call(getTodos, { type: TodoTypes.GET_TODOS });
-  } catch (error) {
-    console.error(error);
-  }
+}: UpdateTodoAction): Generator<any, void, unknown> {
+  yield* updateTodoApi(
+    { payload: { id, title, description, category } },
+    FirebaseTodos.updateTodo
+  );
 }
 
 function* toggleTodoComplete({
   payload: { id, isCompleted },
-}: UpdateTodoAction) {
-  try {
-    yield put(loadStart());
-    yield call(FirebaseTodos.updateTodoComplete, id, isCompleted);
-    yield call(getTodos, { type: TodoTypes.GET_TODOS });
-  } catch (error) {
-    console.error(error);
-  }
+}: UpdateTodoAction): Generator<any, void, unknown> {
+  yield* updateTodoApi({ payload: { id, isCompleted } }, FirebaseTodos.updateTodoComplete);
 }
 
-function* deleteTodo({ payload: { id } }: DeleteTodoAction) {
-  try {
-    yield put(loadStart());
-    yield call(FirebaseTodos.deleteTodo, id);
-    yield call(getTodos, { type: TodoTypes.GET_TODOS });
-  } catch (error) {
-    console.error(error);
-  }
+function* deleteTodo({ payload: { id } }: DeleteTodoAction): Generator<any, void, unknown> {
+  yield* updateTodoApi({ payload: { id } }, FirebaseTodos.deleteTodo);
 }
 
 export default [
