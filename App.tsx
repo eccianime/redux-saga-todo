@@ -1,24 +1,26 @@
-import './src/config/dayjs';
+import "./src/config/dayjs";
 
-import { NativeBaseProvider, StatusBar, View } from 'native-base';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Provider } from 'react-redux';
-import * as Font from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+import { NativeBaseProvider, StatusBar, View } from "native-base";
+import React, { useCallback, useEffect, useState } from "react";
+import { Provider } from "react-redux";
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
-import theme from './src/config/theme';
-import store from './src/redux/store';
-import AppRoutes from './src/routes';
+import theme from "./src/config/theme";
+import store from "./src/redux/store";
+import AppRoutes from "./src/routes";
+import { LogBox } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
+LogBox.ignoreLogs(["In React 18, SSRProvider is not"]);
 
 const App = () => {
   const [isAppReady, setAppReady] = useState(false);
 
   async function _loadAssetsAsync() {
     await Font.loadAsync({
-      'Ubanist-Medium': require('./src/assets/fonts/Urbanist-Medium.ttf'),
-      'Ubanist-Bold': require('./src/assets/fonts/Urbanist-Bold.ttf'),
+      "Ubanist-Medium": require("./src/assets/fonts/Urbanist-Medium.ttf"),
+      "Ubanist-Bold": require("./src/assets/fonts/Urbanist-Bold.ttf"),
     });
     setAppReady(true);
   }

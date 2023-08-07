@@ -1,7 +1,7 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-import { appSelect } from '../../hooks';
-import * as FirebaseTodos from '../../services/todo';
-import { loadFailure, loadStart, loadSuccess } from './actions';
+import { call, put, takeLatest } from "redux-saga/effects";
+import { appSelect } from "../../hooks";
+import * as FirebaseTodos from "../../services/todo";
+import { loadFailure, loadStart, loadSuccess } from "./actions";
 import {
   AddTodoAction,
   DeleteTodoAction,
@@ -9,14 +9,16 @@ import {
   Todo,
   TodoTypes,
   UpdateTodoAction,
-} from './types';
+} from "./types";
 
-function* getTodos(action: GetTodosAction): Generator<any, void, unknown> {
+function* getTodos(
+  action: GetTodosAction
+): Generator<any, void, Todo[] & { currentDate: string }> {
   try {
     yield put(loadStart());
-    const { currentDate } = yield appSelect((state: any) => state.todos);
+    const { currentDate } = yield appSelect((state) => state.todos);
     const date = action.payload?.date || currentDate;
-    const todos: Todo[] = yield call(FirebaseTodos.getTodos, date);
+    const todos = yield call(FirebaseTodos.getTodos, date);
     yield put(loadSuccess(todos));
   } catch (error) {
     yield put(loadFailure());
@@ -38,8 +40,12 @@ function* updateTodoApi(
 
 function* addTodo({
   payload: { title, description, category },
-}: AddTodoAction): Generator<any, void, unknown> {
-  yield* updateTodoApi({ payload: { title, description, category } }, FirebaseTodos.addTodo);
+}: AddTodoAction): Generator<any, void, { currentDate: string }> {
+  const { currentDate } = yield appSelect((state) => state.todos);
+  yield* updateTodoApi(
+    { payload: { title, description, category, date: currentDate } },
+    FirebaseTodos.addTodo
+  );
 }
 
 function* updateTodo({
@@ -54,10 +60,15 @@ function* updateTodo({
 function* toggleTodoComplete({
   payload: { id, isCompleted },
 }: UpdateTodoAction): Generator<any, void, unknown> {
-  yield* updateTodoApi({ payload: { id, isCompleted } }, FirebaseTodos.updateTodoComplete);
+  yield* updateTodoApi(
+    { payload: { id, isCompleted } },
+    FirebaseTodos.updateTodoComplete
+  );
 }
 
-function* deleteTodo({ payload: { id } }: DeleteTodoAction): Generator<any, void, unknown> {
+function* deleteTodo({
+  payload: { id },
+}: DeleteTodoAction): Generator<any, void, unknown> {
   yield* updateTodoApi({ payload: { id } }, FirebaseTodos.deleteTodo);
 }
 

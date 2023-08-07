@@ -6,14 +6,14 @@ import {
   query,
   setDoc,
   where,
-} from 'firebase/firestore';
-import { db } from '../config/firebase';
-import { Todo } from '../redux/todo/types';
+} from "firebase/firestore";
+import { db } from "../config/firebase";
+import { Todo } from "../redux/todo/types";
 
 export const getTodos = async (date?: string) => {
   try {
     const querySnapshot = await getDocs(
-      query(collection(db, 'todos'), where('date', '==', date))
+      query(collection(db, "todos"), where("date", "==", date))
     );
     const todos: Todo[] = [];
     querySnapshot.forEach((doc) => {
@@ -51,7 +51,16 @@ export const addTodo = async (
   date: string
 ) => {
   try {
-    await setDoc(doc(db, 'todos', Math.random().toString().split('.')[1]), {
+    console.log("addTodo", {
+      title,
+      description,
+      category,
+      date,
+      isCompleted: false,
+      created_at: new Date().getTime(),
+      updated_at: new Date().getTime(),
+    });
+    await setDoc(doc(db, "todos", Math.random().toString().split(".")[1]), {
       title,
       description,
       category,
@@ -73,7 +82,7 @@ export const updateTodo = async (
 ) => {
   try {
     await setDoc(
-      doc(db, 'todos', id),
+      doc(db, "todos", id),
       {
         title,
         description,
@@ -92,7 +101,7 @@ export const updateTodo = async (
 export const updateTodoComplete = async (id: string, isCompleted?: boolean) => {
   try {
     await setDoc(
-      doc(db, 'todos', id),
+      doc(db, "todos", id),
       {
         isCompleted: !isCompleted,
         updated_at: new Date().getTime(),
@@ -108,7 +117,7 @@ export const updateTodoComplete = async (id: string, isCompleted?: boolean) => {
 
 export const deleteTodo = async (id: string) => {
   try {
-    await deleteDoc(doc(db, 'todos', id));
+    await deleteDoc(doc(db, "todos", id));
   } catch (error) {
     console.log(error);
   }

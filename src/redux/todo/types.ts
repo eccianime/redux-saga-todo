@@ -1,15 +1,15 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 export enum TodoTypes {
-  LOADING_START = '@todo/LOADING_START',
-  LOADING_SUCCESS = '@todo/LOADING_SUCCESS',
-  LOADING_FAILURE = '@todo/LOADING_FAILURE',
-  GET_TODOS = '@todo/GET_TODOS',
-  ADD_TODO = '@todo/ADD_TODO',
-  UPDATE_TODO = '@todo/UPDATE_TODO',
-  DELETE_TODO = '@todo/DELETE_TODO',
-  SET_CURRENT_DATE = '@todo/SET_CURRENT_DATE',
-  TOGGLE_TODO_COMPLETE = '@todo/TOGGLE_TODO_COMPLETE',
+  LOADING_START = "@todo/LOADING_START",
+  LOADING_SUCCESS = "@todo/LOADING_SUCCESS",
+  LOADING_FAILURE = "@todo/LOADING_FAILURE",
+  GET_TODOS = "@todo/GET_TODOS",
+  ADD_TODO = "@todo/ADD_TODO",
+  UPDATE_TODO = "@todo/UPDATE_TODO",
+  DELETE_TODO = "@todo/DELETE_TODO",
+  SET_CURRENT_DATE = "@todo/SET_CURRENT_DATE",
+  TOGGLE_TODO_COMPLETE = "@todo/TOGGLE_TODO_COMPLETE",
 }
 
 export type Category = {
@@ -48,7 +48,7 @@ export type AddTodoAction = {
   payload: {
     title: string;
     description: string;
-    category: string;
+    category: keyof typeof Ionicons.glyphMap;
   };
 };
 
